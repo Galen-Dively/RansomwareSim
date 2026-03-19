@@ -1,0 +1,14 @@
+/home/galen/GalenRansom/bin/Debug/net8.0/GalenRansom
+/home/galen/GalenRansom/bin/Debug/net8.0/GalenRansom.deps.json
+/home/galen/GalenRansom/bin/Debug/net8.0/GalenRansom.runtimeconfig.json
+/home/galen/GalenRansom/bin/Debug/net8.0/GalenRansom.dll
+/home/galen/GalenRansom/bin/Debug/net8.0/GalenRansom.pdb
+/home/galen/GalenRansom/obj/Debug/net8.0/GalenRansom.GeneratedMSBuildEditorConfig.editorconfig
+/home/galen/GalenRansom/obj/Debug/net8.0/GalenRansom.AssemblyInfoInputs.cache
+/home/galen/GalenRansom/obj/Debug/net8.0/GalenRansom.AssemblyInfo.cs
+/home/galen/GalenRansom/obj/Debug/net8.0/GalenRansom.csproj.CoreCompileInputs.cache
+/home/galen/GalenRansom/obj/Debug/net8.0/GalenRansom.dll
+/home/galen/GalenRansom/obj/Debug/net8.0/refint/GalenRansom.dll
+/home/galen/GalenRansom/obj/Debug/net8.0/GalenRansom.pdb
+/home/galen/GalenRansom/obj/Debug/net8.0/GalenRansom.genruntimeconfig.cache
+/home/galen/GalenRansom/obj/Debug/net8.0/ref/GalenRansom.dll
