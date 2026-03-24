@@ -150,3 +150,14 @@ class TUI:
             except (ValueError, IndexError):
                 pass
     ### RANSOM MENU ###
+    def _draw_ransom(self):
+        self.screen.addstr(0, 0, "==RANSOM==")
+        self.screen.addstr(1, 0, "A. Attack All Targets")
+        self.screen.refresh()
+
+    def _handle_ransom_input(self, c):
+        if c == ord('b'):
+            self._set_state(STATE.MAIN)
+        elif c == ord('a'):
+            self.bus.cmd_queue.put("ransom")
+        
