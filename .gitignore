@@ -1,0 +1,7 @@
+venv
+payload/build/
+payload/dist/
+payload/__pycache__
+payload/venv
+payload/main.spec
+
