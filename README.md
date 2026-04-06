@@ -95,9 +95,9 @@ python3 main.py
 * In this menu select your target by pressing the corresponding number
 `r` - Ransomware option
 * When a target/targets is selected run ransomware on them
-`t` - List active targets
-`q` - Quit
-`b` - Goes back in all menus
+`t` - List active targets <br>
+`q` - Quit <br>
+`b` - Goes back in all menus <br>
 
 ### Ransomware Instructions
 1. Wait for client to join
