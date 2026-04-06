@@ -5,3 +5,6 @@ payload/__pycache__
 payload/venv
 payload/main.spec
 
+*.spec
+payload/*.spec
+
