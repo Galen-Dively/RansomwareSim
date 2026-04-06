@@ -1,9 +1,6 @@
 #### CONFIGURATION ######
 KEYSIZE = 2048 # Change to 4096 for harder encryption
 
-
-
-
 payment_received = False
 
 def toggle_payment():
